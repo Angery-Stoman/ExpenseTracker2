@@ -49,9 +49,13 @@ class MainActivity : AppCompatActivity() {
         // Initial data load
         loadExpenses()
         updateRemainingBudget()
+        updateNotification(monthlyBudget - dbHelper.getTotalExpenses())
+
 
         // Setup background alert
         setupBackgroundAlert()
+        startExpenseForegroundService(4000.0)
+
     }
 
     override fun onResume() {
@@ -75,9 +79,11 @@ class MainActivity : AppCompatActivity() {
         val totalExpenses = dbHelper.getTotalExpenses()
         val remainingBudget = monthlyBudget - totalExpenses
         remainingBudgetTextView.text = "Remaining Budget: $${String.format("%.2f", remainingBudget)}"
+        updateNotification(remainingBudget)
     }
 
     private fun setupBackgroundAlert() {
+        //alert for when you have no money left
         val intent = Intent(this, ExpenseAlertReceiver::class.java) // Updated receiver name
         val pendingIntent = PendingIntent.getBroadcast(
             this,
@@ -96,7 +102,24 @@ class MainActivity : AppCompatActivity() {
             pendingIntent
         )
 
+
+
         // Log to confirm alarm setup
         Log.d("BackgroundService", "Alarm for background service set successfully for 1-minute interval")
     }
+    private fun startExpenseForegroundService(initialBudget: Double) {
+        val intent = Intent(this, ExpenseForegroundService::class.java).apply {
+            putExtra("remainingBudget", initialBudget)
+        }
+        startService(intent)
+    }
+
+    private fun updateNotification(remainingBudget: Double) {
+        val intent = Intent(this, ExpenseForegroundService::class.java).apply {
+            putExtra("remainingBudget", remainingBudget)
+        }
+        startService(intent)
+    }
+
+
 }

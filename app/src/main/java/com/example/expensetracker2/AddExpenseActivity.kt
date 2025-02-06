@@ -107,6 +107,7 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun setupBackgroundAlert() {
+        //calls the alert for being more mindful with money
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlertReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(

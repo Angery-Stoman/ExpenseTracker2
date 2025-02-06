@@ -1,5 +1,5 @@
 package com.example.expensetracker2
-
+//this is the background service for the logging of the background service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
@@ -21,8 +21,8 @@ class ExpenseLoggingService : Service() {
                     // Log to Logcat
                     Log.d("ExpenseLoggingService", "An expense has been added!")
 
-                    // Sleep for 15 seconds
-                    Thread.sleep(15000)
+
+                    break
                 } catch (e: InterruptedException) {
                     Log.e("ExpenseLoggingService", "Thread interrupted: ${e.message}")
                     break

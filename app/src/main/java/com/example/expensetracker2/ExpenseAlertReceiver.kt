@@ -6,7 +6,7 @@ import android.content.Intent
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.core.app.NotificationCompat
-
+//notification for when you have no moneys left, implemented using a broadcast receiver
 class ExpenseAlertReceiver : BroadcastReceiver() {
     private val channelId = "expense_alert_channel"
 

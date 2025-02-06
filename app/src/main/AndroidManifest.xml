@@ -1,9 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.expensetracker2">
 
+    <!-- Required permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
 
     <application
         android:allowBackup="true"
@@ -13,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseTracker2">
 
+        <!-- Activity declarations -->
         <activity android:name=".AddExpenseActivity" />
         <activity android:name=".MainActivity"
             android:exported="true">
@@ -22,10 +27,19 @@
             </intent-filter>
         </activity>
 
+        <!-- Receiver declarations -->
         <receiver android:name=".ExpenseAlertReceiver" />
         <receiver android:name=".AlertReceiver" />
-        <service android:name=".ExpenseLoggingService" />
 
+        <!-- Service declarations -->
+        <service
+            android:name=".ExpenseLoggingService"
+            android:exported="false" />
+        <service
+            android:name=".ExpenseForegroundService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync"
+             />
 
     </application>
 </manifest>

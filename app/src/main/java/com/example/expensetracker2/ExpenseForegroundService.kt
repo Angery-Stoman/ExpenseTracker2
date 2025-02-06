@@ -1,5 +1,4 @@
 package com.example.expensetracker2
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +7,8 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
+//code for budget tracker foreground notification
+
 class ExpenseForegroundService : Service() {
     private val channelId = "expense_channel"
     private val notificationId = 1
@@ -15,11 +16,11 @@ class ExpenseForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        updateNotification(2000.0) // Initially show the full budget
+        updateNotification(4000.0) // Initially show the full budget
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val remainingBudget = intent?.getDoubleExtra("remainingBudget", 2000.0) ?: 2000.0
+        val remainingBudget = intent?.getDoubleExtra("remainingBudget", 4000.0) ?: 4000.0
         updateNotification(remainingBudget)
         return START_STICKY
     }
@@ -28,13 +29,13 @@ class ExpenseForegroundService : Service() {
         val channel = NotificationChannel(
             channelId,
             "Expense Notifications",
-            NotificationManager.IMPORTANCE_LOW
+            NotificationManager.IMPORTANCE_HIGH
         )
         val manager = getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(channel)
     }
 
-    @SuppressLint("ForegroundServiceType")
+
     private fun updateNotification(remainingBudget: Double) {
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Expense Tracker")
@@ -44,6 +45,8 @@ class ExpenseForegroundService : Service() {
 
         startForeground(notificationId, notification)
     }
+
+
 
     override fun onBind(intent: Intent?): IBinder? = null
 }
